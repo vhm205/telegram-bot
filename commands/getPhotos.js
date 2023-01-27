@@ -8,7 +8,7 @@ async function getPhotosSource(query, limit = 10) {
 
 		await client.photos.search({ query, per_page: limit }).then((res) => {
 			const images = res.photos;
-			sources = images.map((img) => img.src.medium);
+			sources = images.map((img) => img.src.original);
 		});
 
 		return sources;
