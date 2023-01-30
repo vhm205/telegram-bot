@@ -45,6 +45,7 @@ jobs:
   
   deploy:
     name: Deploy to EC2
+    needs: build
     runs-on: ubuntu-latest
     
     steps:
@@ -55,5 +56,8 @@ jobs:
         username: ${{ secrets.AWS_BOT_USERNAME }}
         key: ${{ secrets.AWS_EC2_BOT_SSH_KEY }}
         script: |
+          docker stop telegram-bot
+          docker rm -f telegram-bot
+          docker pull 102205/telegram-bot:latest
           docker run -d --rm --name telegram-bot 102205/telegram-bot
           
