@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  build_docker:
     runs-on: ubuntu-latest
 
     strategy:
@@ -27,8 +27,11 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
 
-    - name: Dependecies
-      run: npm ci
+    # install applicaion dependencies
+    - name: Install dependencies
+      run: |
+        npm install
+        npm ci 
     
     - name: Push new version
       run: git push
