@@ -32,22 +32,22 @@ jobs:
     - name: Install dependencies
       run: |
         npm install
-        npm ci 
-      
+        npm ci
+
     - name: Login to DockerHub Registry
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Build Docker image
       run: docker build . --file Dockerfile --tag 102205/telegram-bot:latest
-      
+
     - name: Push to Docker Hub
       run: docker push 102205/telegram-bot:latest
-  
+
   deploy:
     name: Deploy to EC2
     needs: build
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Pull docker image in EC2 telegram-bot
       uses: appleboy/ssh-action@master
@@ -58,6 +58,6 @@ jobs:
         script: |
           docker stop telegram-bot
           docker rm -f telegram-bot
-          docker pull 102205/telegram-bot:latest
+          docker rmi 102205/telegram-bot
           docker run -d --rm --name telegram-bot 102205/telegram-bot
-          
+
