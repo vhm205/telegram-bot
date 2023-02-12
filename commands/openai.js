@@ -1,5 +1,6 @@
 import "dotenv/config.js";
 import { Configuration, OpenAIApi } from 'openai';
+import { getTextFromInput } from '../utils/helpers.js';
 
 const { OPENAI_SECRET_KEY } = process.env;
 
@@ -25,12 +26,12 @@ const requestOpenAI = async (prompt, model = 'text-davinci-003') => {
 };
 
 export default function askOpenAI(bot) {
-	bot.onText(/\/ask (.+)/, async (msg, match) => {
-		const chatId = msg.chat.id;
-		const text = match[1]; // the captured "whatever"
+	bot.command('ask', async (ctx) => {
+		const chatId = ctx.chat.id;
+    const message = ctx.update.message;
+    const text = getTextFromInput(message.text);
 
-		// send back the matched "whatever" to the chat
 		const textResponse = await requestOpenAI(text);
-		bot.sendMessage(chatId, textResponse);
+		bot.telegram.sendMessage(chatId, textResponse);
 	});
 }

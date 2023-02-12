@@ -51,34 +51,37 @@ function getTime() {
 }
 
 export default function sleepCalculator(bot) {
-	bot.onText(/\/sleep (.+)/, async (msg, match) => {
-		const chatId = msg.chat.id;
-		const params = match[1];
-    const [t = 'wakeup', h = 0, m = 0, mer = 'AM'] = params?.split?.(' ') ?? [];
+	bot.command('sleep', (ctx) => {
+		const chatId = ctx.chat.id;
+		const params = ctx.message.text;
+		const [t = 'wakeup', h = 0, m = 0, mer = 'AM'] = params?.split?.(' ') ?? [];
+		console.log({ params });
 
 		const SCBedTime = {
-      hours: +h,
+			hours: +h,
 			minutes: +m,
 			meridiem: mer,
 		};
-    const timeList = getListTime(SCBedTime, t);
+		const timeList = getListTime(SCBedTime, t);
 
-    SCBedTime.hours = SCBedTime.hours < 10 ? `0${SCBedTime.hours}` : SCBedTime.hours;
-    SCBedTime.minutes = SCBedTime.minutes < 10 ? `0${SCBedTime.minutes}` : SCBedTime.minutes;
+		SCBedTime.hours =
+			SCBedTime.hours < 10 ? `0${SCBedTime.hours}` : SCBedTime.hours;
+		SCBedTime.minutes =
+			SCBedTime.minutes < 10 ? `0${SCBedTime.minutes}` : SCBedTime.minutes;
 
-    let textResponse = `The average human takes 15 minutes to fall asleep.\n`;
-    let timeResponse = `---------\n`;
+		let textResponse = `The average human takes 15 minutes to fall asleep.\n`;
+		let timeResponse = `---------\n`;
 
-    if(t === 'bedtime' || t === 'b') {
-      textResponse += `To wake up refreshed at ${SCBedTime.hours}:${SCBedTime.minutes} ${SCBedTime.meridiem}, you need go to sleep at one of the following times:\n`;
-    } else {
-      textResponse += `If you go to sleep right now, you should try to wake up at one of the following times:\n`;
-    }
+		if (t === 'bedtime' || t === 'b') {
+			textResponse += `To wake up refreshed at ${SCBedTime.hours}:${SCBedTime.minutes} ${SCBedTime.meridiem}, you need go to sleep at one of the following times:\n`;
+		} else {
+			textResponse += `If you go to sleep right now, you should try to wake up at one of the following times:\n`;
+		}
 
-    timeList.map(time => {
-      timeResponse += `${time}\n`;
-    })
+		timeList.map((time) => {
+			timeResponse += `${time}\n`;
+		});
 
-    bot.sendMessage(chatId, `${textResponse}${timeResponse}`);
+		bot.telegram.sendMessage(chatId, `${textResponse}${timeResponse}`);
 	});
 }
