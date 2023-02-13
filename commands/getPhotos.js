@@ -1,5 +1,6 @@
 import "dotenv/config.js";
 import Pexels from 'pexels';
+import { getTextFromInput } from '../utils/helpers.js';
 
 async function getPhotosSource(query, limit = 10) {
 	try {
@@ -19,10 +20,12 @@ async function getPhotosSource(query, limit = 10) {
 }
 
 export default function getPhotosByTopic(bot) {
-	bot.onText(/\/photo (.+)/, async (msg, match) => {
-		const chatId = msg.chat.id;
-		const sources = await getPhotosSource(match[1]);
+  bot.command('photo', async (ctx) => {
+		const chatId = ctx.chat.id;
+    const message = ctx.update.message;
+    const text = getTextFromInput(message.text);
 
-		sources.map((src) => bot.sendPhoto(chatId, src));
+		const sources = await getPhotosSource(text);
+    sources.map((src) => bot.telegram.sendPhoto(chatId, src));
 	});
 }
