@@ -49,15 +49,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Pull docker image in EC2 telegram-bot
+    - name: Pull docker image in EC2
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.AWS_BOT_HOST }}
         username: ${{ secrets.AWS_BOT_USERNAME }}
         key: ${{ secrets.AWS_EC2_BOT_SSH_KEY }}
         script: |
-          docker stop telegram-bot
-          docker rm -f telegram-bot
-          docker rmi 102205/telegram-bot
-          docker run -d --rm --name telegram-bot 102205/telegram-bot
+          cd /opt/telegram-bot
+          docker-compose down
+          docker-compose pull
+          docker-compose up -d
 
