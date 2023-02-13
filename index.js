@@ -5,14 +5,6 @@ import { getPhotosByTopic, askOpenAI, sleepCalculator } from './commands/index.j
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 const listenEvent = () => {
-  // bot.command('start', ctx => {
-  //   console.log({ ctx });
-  //   console.log({ message: ctx.update.message })
-  //   console.log({ options: ctx.telegram.options })
-  //   bot.telegram.sendMessage(ctx.chat.id, 'hello there! Welcome to my new telegram bot.', {
-  //   })
-  // })
-
   // bot.hears(/hi/gi, ctx => {
 		// console.log({ ctx });
 		// console.log({ message: ctx.update.message });
