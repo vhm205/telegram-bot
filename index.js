@@ -1,6 +1,6 @@
 import "dotenv/config.js";
 import { Telegraf } from 'telegraf';
-import { getPhotosByTopic, askOpenAI, sleepCalculator } from './commands/index.js';
+import { getPhotosByTopic, askOpenAI, sleepCalculator, getWeather } from './commands/index.js';
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
@@ -20,6 +20,7 @@ const listenEvent = () => {
 	sleepCalculator(bot);
 	askOpenAI(bot);
 	getPhotosByTopic(bot);
+  getWeather(bot);
 
   bot.start((ctx) => ctx.reply("Welcome to VHM's bot"));
 	bot.help((ctx) => ctx.reply('Send me a sticker'));
@@ -39,3 +40,6 @@ const listenEvent = () => {
 
 listenEvent();
 
+// Enable graceful stop
+process.once('SIGINT', () => bot.stop('SIGINT'));
+process.once('SIGTERM', () => bot.stop('SIGTERM'));

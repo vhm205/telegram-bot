@@ -4,3 +4,7 @@ export const getTextFromInput = message => {
   const text = params.join(' ');
   return text;
 }
+
+export const fToC = f => {
+  return Math.round((f - 32) * 5 / 9);
+}
