@@ -9,10 +9,11 @@
   },
   "dependencies": {
     "chatgpt": "^3.3.13",
+    "crawlee": "^3.2.2",
     "got": "^12.5.3",
-    "node-telegram-bot-api": "^0.61.0",
     "openai": "^3.1.0",
     "pexels": "^1.4.0",
+    "puppeteer": "^19.7.2",
     "telegraf": "^4.11.2",
     "uuid": "^9.0.0"
   },

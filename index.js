@@ -1,26 +1,15 @@
 import "dotenv/config.js";
 import { Telegraf } from 'telegraf';
-import { getPhotosByTopic, askOpenAI, sleepCalculator, getWeather } from './commands/index.js';
+import { getPhotosByTopic, askOpenAI, sleepCalculator, getWeather, dailyDev } from './commands/index.js';
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
 
 const listenEvent = () => {
-  // bot.hears(/hi/gi, ctx => {
-		// console.log({ ctx });
-		// console.log({ message: ctx.update.message });
-		// console.log({ options: ctx.telegram.options });
-  // });
-
-  // bot.on(/\/bed (.+)/, (ctx) => {
-  //   console.log({ ctx });
-		// console.log({ message: ctx.update.message });
-		// console.log({ options: ctx.telegram.options });
-  // })
-
 	sleepCalculator(bot);
 	askOpenAI(bot);
 	getPhotosByTopic(bot);
   getWeather(bot);
+  dailyDev(bot);
 
   bot.start((ctx) => ctx.reply("Welcome to VHM's bot"));
 	bot.help((ctx) => ctx.reply('Send me a sticker'));
