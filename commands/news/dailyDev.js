@@ -2,6 +2,40 @@ import "dotenv/config.js";
 import puppeteer from 'puppeteer';
 import { escapeStr, isIterable } from '../../utils/helpers.js';
 
+// we can block by resrouce type like fonts, images etc.
+const blockResourceType = [
+  'beacon',
+  'csp_report',
+  'font',
+  'image',
+  'imageset',
+  'media',
+  'object',
+  'texttrack',
+];
+// we can also block by domains, like google-analytics etc.
+const blockResourceName = [
+  'adition',
+  'adzerk',
+  'analytics',
+  'cdn.api.twitter',
+  'clicksor',
+  'clicktale',
+  'doubleclick',
+  'exelator',
+  'facebook',
+  'fontawesome',
+  'google',
+  'google-analytics',
+  'googletagmanager',
+  'mixpanel',
+  'optimizely',
+  'quantserve',
+  'sharethrough',
+  'tiqcdn',
+  'zedo',
+];
+
 const getPosts = async (keyword, limit) => {
 	try {
     let DAILY_DEV_URL = keyword ? `https://app.daily.dev/search?q=${keyword}` : 'https://app.daily.dev';
@@ -16,14 +50,30 @@ const getPosts = async (keyword, limit) => {
       default:
         break;
     }
-    // console.log({ DAILY_DEV_URL, keyword, limit });
 
 		const browser = await puppeteer.launch({
 			headless: true,
 			timeout: 0,
+      executablePath: '/usr/bin/google-chrome',
+      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu']
 		});
 		const page = await browser.newPage();
-		await page.goto(DAILY_DEV_URL, { waitUntil: 'networkidle0' });
+
+    await page.setRequestInterception(true);
+
+    page.on('request', request => {
+			const requestUrl = request.url();
+			if (
+				request.resourceType() in blockResourceType ||
+				blockResourceName.some((resource) => requestUrl.includes(resource))
+			) {
+				request.abort();
+			} else {
+				request.continue();
+			}
+		});
+
+		await page.goto(DAILY_DEV_URL, { waitUntil: 'networkidle2' });
 
 		await page.waitForXPath(
 			'//*[@id="__next"]/div[1]/main/main/div/div/div[1]',
@@ -76,7 +126,7 @@ export default function getDailyDev(bot) {
 		const chatId = ctx.chat.id;
 		const message = ctx.update.message;
 
-    const params = message.text.split(' ')
+    const params = message.text.split(' ');
     params.shift();
 
     let length = null;
@@ -92,11 +142,9 @@ export default function getDailyDev(bot) {
 		try {
 			const articles = await getPosts(text, length);
 
-      if(!articles.length) {
+      if(!articles.length || !isIterable(articles)) {
 				return await bot.telegram.sendMessage(chatId, "Can't get posts from daily.dev");
       }
-
-			if (!isIterable(articles)) return;
 
 			const opts = {
 				parse_mode: 'HTML',
