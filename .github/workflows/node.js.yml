@@ -65,6 +65,6 @@ jobs:
         script: |
           cd /opt/telegram-bot
           docker-compose down --rmi all
-          docker-compose pull 102205/telegram-bot:${{ needs.build.outputs.tag }}
-          # docker-compose up -d
+          HASH_COMMIT_TAG=${{ needs.build.outputs.tag }} docker-compose pull
+          docker-compose up -d
 
