@@ -64,7 +64,9 @@ jobs:
         key: ${{ secrets.AWS_EC2_BOT_SSH_KEY }}
         script: |
           cd /opt/telegram-bot
-          docker-compose down --rmi all
+          # docker-compose down --rmi all
+          docker rm -f $(docker ps -aq)
+          docker rmi $(docker images -q)
           HASH_COMMIT_TAG=${{ needs.build.outputs.tag }} docker-compose pull
-          docker-compose up -d
+          HASH_COMMIT_TAG=${{ needs.build.outputs.tag }} docker-compose up -d
 
