@@ -62,6 +62,6 @@ jobs:
         script: |
           cd /opt/telegram-bot
           docker-compose down --rmi all
-          docker-compose pull 102205/telegram-bot:${{ jobs.build.steps.commit.outputs.short }}
+          docker-compose pull 102205/telegram-bot:${{ build.steps.commit.outputs.short }}
           # docker-compose up -d
 
