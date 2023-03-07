@@ -4,7 +4,9 @@ services:
   telegram-bot:
     # image: 102205/telegram-bot:latest
     image: telegram-bot
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: telegram-bot
     restart: unless-stopped
     environment:

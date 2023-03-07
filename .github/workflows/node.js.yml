@@ -22,11 +22,9 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v4
-      with:
-        images: name/app
+    - name: Create tag for docker image with hash commit
+      id: commit
+      uses: pr-mpt/actions-commit-hash@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -44,10 +42,10 @@ jobs:
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Build Docker image
-      run: export DOCKER_CONTENT_TRUST=1 && docker build . --file Dockerfile --tag 102205/telegram-bot:${{ steps.meta.outputs.tags }}
+      run: export DOCKER_CONTENT_TRUST=1 && docker build . --file Dockerfile --tag 102205/telegram-bot:${{ steps.commit.outputs.short }}
 
     - name: Push to Docker Hub
-      run: docker push 102205/telegram-bot:${{ steps.meta.outputs.tags }}
+      run: docker push 102205/telegram-bot:${{ steps.commit.outputs.short }}
 
   deploy:
     name: Deploy to EC2
