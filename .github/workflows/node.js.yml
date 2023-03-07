@@ -22,11 +22,11 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Docker meta
-      id: meta
-      uses: docker/metadata-action@v4
+    - name: Bump version and push tag
+      id: tag_version
+      uses: mathieudutour/github-tag-action@v6.1
       with:
-        images: name/app
+        github_token: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v3
@@ -44,10 +44,10 @@ jobs:
       run: echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
 
     - name: Build Docker image
-      run: export DOCKER_CONTENT_TRUST=1 && docker build . --file Dockerfile --tag 102205/telegram-bot:${{ steps.meta.outputs.tags }}
+      run: export DOCKER_CONTENT_TRUST=1 && docker build . --file Dockerfile --tag 102205/telegram-bot:${{ steps.tag_version.outputs.new_tag }}
 
     - name: Push to Docker Hub
-      run: docker push 102205/telegram-bot:${{ steps.meta.outputs.tags }}
+      run: docker push 102205/telegram-bot:${{ steps.tag_version.outputs.new_tag }}
 
   deploy:
     name: Deploy to EC2
