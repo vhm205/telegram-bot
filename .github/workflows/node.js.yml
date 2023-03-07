@@ -22,7 +22,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - name: Create tag for docker image with hash commit
+    - name: Create docker image tag with hash commit
       id: commit
       uses: pr-mpt/actions-commit-hash@v2
 
