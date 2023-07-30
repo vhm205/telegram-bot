@@ -9,6 +9,6 @@ services:
       dockerfile: Dockerfile
     container_name: telegram-bot
     restart: unless-stopped
-    environment:
-      - INFISICAL_TOKEN=${INFISICAL_TOKEN}
+    # environment:
+    #   - INFISICAL_TOKEN=${INFISICAL_TOKEN}
 
