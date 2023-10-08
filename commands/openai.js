@@ -12,13 +12,14 @@ const openai = new OpenAIApi(configuration);
 
 const requestOpenAI = async (prompt, model = 'text-davinci-003') => {
 	try {
-		const completion = await openai.createCompletion({
+		const { data } = await openai.createCompletion({
 			model,
+      // messages: [{ role: 'user', content: 'Say this is a test' }],
 			prompt,
 			max_tokens: 2048,
 			temperature: 0.9,
 		});
-		const textResponse = completion.data.choices[0].text;
+    const textResponse = data.choices.length ? data.choices[0].text : '';
 		return textResponse;
 	} catch (error) {
 		console.error(error);
@@ -31,7 +32,7 @@ export default function askOpenAI(bot) {
     const message = ctx.update.message;
     const text = getTextFromInput(message.text);
 
-		const textResponse = await requestOpenAI(text);
+		const textResponse = await requestOpenAI(text, 'gpt-3.5-turbo');
 		bot.telegram.sendMessage(chatId, textResponse);
 	});
 }
