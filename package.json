@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "crawlee": "^3.2.2",
-    "got": "^12.5.3",
+    "got": "^12.6.0",
     "openai": "^3.1.0",
     "pexels": "^1.4.0",
     "puppeteer": "^19.7.2",
