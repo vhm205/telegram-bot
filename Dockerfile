@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install gnupg wget curl bash -y && \
 
 # FROM gcr.io/distroless/nodejs18-debian11
 
-CMD ["node", "run", "start"]
+CMD ["npm", "run", "start"]
 # CMD ["infisical", "run", "--", "npm", "run", "start"]
 
 ## https://github.com/goodwithtech/dockle
