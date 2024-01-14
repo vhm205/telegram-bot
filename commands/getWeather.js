@@ -1,4 +1,3 @@
-import "dotenv/config.js";
 import got from 'got';
 import { fToC, handleFlagInCommand, getWeekDay } from '../utils/helpers.js';
 

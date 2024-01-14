@@ -1,4 +1,3 @@
-import "dotenv/config.js";
 import { Configuration, OpenAIApi } from 'openai';
 import { getTextFromInput } from '../utils/helpers.js';
 

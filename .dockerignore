@@ -14,4 +14,5 @@ docker-compose.yml
 storage
 README.md
 
+*.todo
 test-crawl.js

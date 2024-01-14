@@ -1,4 +1,3 @@
-import 'dotenv/config.js';
 import Pexels from 'pexels';
 import { getTextFromInput, handleFlagInCommand } from '../utils/helpers.js';
 

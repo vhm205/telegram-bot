@@ -1,9 +1,9 @@
-import 'dotenv/config.js';
 import { Telegraf } from 'telegraf';
 import {
 	getPhotosByTopic,
 	sleepCalculator,
 	getWeather,
+  getRandomFood,
 } from './commands/index.js';
 
 const bot = new Telegraf(process.env.TELEGRAM_BOT_TOKEN);
@@ -12,6 +12,7 @@ const listenEvent = () => {
 	sleepCalculator(bot);
 	getWeather(bot);
 	getPhotosByTopic(bot);
+  getRandomFood(bot);
 
 	bot.start((ctx) => ctx.reply("Welcome to VHM's bot"));
 	bot.help((ctx) => {

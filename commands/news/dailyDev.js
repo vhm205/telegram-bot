@@ -1,4 +1,3 @@
-import "dotenv/config.js";
 import puppeteer from 'puppeteer';
 import { escapeStr, isIterable } from '../../utils/helpers.js';
 

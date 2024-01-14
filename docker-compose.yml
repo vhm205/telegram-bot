@@ -2,7 +2,7 @@ version: '3'
 
 services:
   telegram-bot:
-    # image: 102205/telegram-bot:latest
+    image: 102205/telegram-bot:latest
     image: telegram-bot
     build:
       context: .
