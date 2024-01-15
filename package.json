@@ -9,7 +9,7 @@
     "start": "infisical run -- node index.js"
   },
   "dependencies": {
-    "crawlee": "^3.2.2",
+    "crawlee": "^3.3.0",
     "got": "^12.5.3",
     "openai": "^3.1.0",
     "pexels": "^1.4.0",
